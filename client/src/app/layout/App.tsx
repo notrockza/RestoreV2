@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Header from "./Header";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import "react-toastify/dist/ReactToastify.css";
@@ -23,8 +23,6 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 import { setBasket } from "../../features/basket/basketSlice";
-import { statSync } from "fs";
-// import { setBasket } from "../../features/basket/basketSlice";
 
 export default function App() {
 //const { setBasket } = useStoreContext(); //ควบคุมสเตทด้วย React context to Centralize

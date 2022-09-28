@@ -2,6 +2,7 @@ import axios, { AxiosError, AxiosResponse } from "axios";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { history } from "../..";
+import { PaginatedResponse } from "../models/pagination";
 
 
 axios.defaults.baseURL = "http://localhost:5001/api/";
@@ -11,9 +12,13 @@ const ResponseBody = (response: AxiosResponse) => response.data;
 
 const sleep = () => new Promise((_) => setTimeout(_, 350));
 
-axios.interceptors.response.use(
-  async (response) => {
+axios.interceptors.response.use(async (response) => {
     await sleep();
+    const pagination = response.headers['pagination']; //ส่งมาจาก ProductController
+    if (pagination) {
+      response.data = new PaginatedResponse(response.data, JSON.parse(pagination));
+      return response;
+    }
     return response;
   },
   (error: AxiosError) => {
@@ -55,14 +60,17 @@ axios.interceptors.response.use(
 
 
 const requests = {
-  get: (url: string) => axios.get(url).then(ResponseBody),
+  get: (url: string, params?: URLSearchParams) => axios.get(url, {params}).then(ResponseBody),
   post: (url: string,body:{}) => axios.post(url,body).then(ResponseBody),
   delete: (url: string) => axios.delete(url).then(ResponseBody),
 };
 
 const Catalog = {
-  list: () => requests.get("Products"),
+  list: (params: URLSearchParams) => requests.get('products', params),
+
+  // list: () => requests.get("Products"),
   details: (id: number) => requests.get(`products/${id}`),
+  fetchFilters: () => requests.get('products/filters'),
 };
 
 const TestErrors = {
