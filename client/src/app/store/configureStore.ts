@@ -5,6 +5,8 @@ import { counterSlice} from "../../features/contact/counterSlice";
 import { HomeSilce } from '../../features/home/HomeSilce';
 import basketSlice from '../../features/basket/basketSlice';
 import catalogSlice  from '../../features/catalog/catalogSlice';
+import accountSlice from '../../features/account/accountSlice';
+
 
 
 // store เป็นการรวบรวมพ่อครัว
@@ -13,7 +15,9 @@ export const store = configureStore({
     counter: counterSlice.reducer,
     screen : HomeSilce.reducer,
     basket : basketSlice,
-    catalog : catalogSlice
+    catalog : catalogSlice,
+    account : accountSlice
+
   }
 
     

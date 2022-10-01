@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState ,useCallback } from "react";
 import Header from "./Header";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import "react-toastify/dist/ReactToastify.css";
@@ -13,16 +13,18 @@ import ProductDetails from "../../features/catalog/ProductDetails";
 import NotFound from "../errors/NotFound";
 import { ToastContainer } from "react-toastify";
 import ServerError from "../errors/ServerError";
-import agent from "../api/agent";
-import { getCookie } from "../util/util";
 import LoadingComponent from "./LoadingComponent";
 import BasketPage from "../../features/basket/BasketPage";
 import CheckoutPage from "../../features/checkout/CheckoutPage";
 import { useAppDispatch, useAppSelector } from "../store/configureStore";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { fetchBasketAsync } from "../../features/basket/basketSlice";
 
-import { setBasket } from "../../features/basket/basketSlice";
+import Login from "../../features/account/Login";
+import { fetchCurrentUser } from "../../features/account/accountSlice";
+import Register from "../../features/account/Register";
+import { PrivateLogin, PrivateRoute } from "./PrivateRoute";
 
 export default function App() {
 //const { setBasket } = useStoreContext(); //ควบคุมสเตทด้วย React context to Centralize
@@ -31,17 +33,30 @@ export default function App() {
   const { fullscreen  } = useAppSelector( state => state.screen);
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    //เอาข้อมูลใส่ใน COOKIE
-    const buyerId = getCookie("buyerId");
-    //หลักจากที่มีการ เปลียน state เเล้ว useEffect ก็จะทำงาน
-    if (buyerId) {
-      agent.Basket.get()
-        .then((basket) => dispatch(setBasket(basket)))
-        .catch((error) => console.log(error))
-        .finally(() => setLoading(false));
-    } else setLoading(false);
+  const initApp = useCallback(async () => {
+    try {
+      await dispatch(fetchCurrentUser());
+      await dispatch(fetchBasketAsync());
+    } catch (error) {
+      console.log(error);
+    }
   }, [dispatch]);
+
+  useEffect(() => {
+    initApp().then(() => setLoading(false));
+  }, [initApp]);
+
+  // useEffect(() => {
+  //   //เอาข้อมูลใส่ใน COOKIE
+  //   const buyerId = getCookie("buyerId");
+  //   //หลักจากที่มีการ เปลียน state เเล้ว useEffect ก็จะทำงาน
+  //   if (buyerId) {
+  //     agent.Basket.get()
+  //       .then((basket) => dispatch(setBasket(basket)))
+  //       .catch((error) => console.log(error))
+  //       .finally(() => setLoading(false));
+  //   } else setLoading(false);
+  // }, [dispatch]);
 
   const [mode, setMode] = useState(true);
   const displayMode = mode ? "light" : "dark";
@@ -83,7 +98,19 @@ const mainrouter = <Routes>
   <Route path="/catalog" element={<Catalog />} />
   <Route path="/basket" element={<BasketPage />} />
   <Route path="/catalog/:id" element={<ProductDetails />} />
-  <Route path="/checkout" element={< CheckoutPage />} />
   <Route path="/server-error" element={<ServerError />} />
-  <Route path="*" element={<NotFound />} />
+ <Route path="/register" element={<Register />} />
+  <Route path="*" element={<NotFound />} />   
+  <Route
+              path="/login"
+              element={
+                <PrivateLogin>
+                  <Login />
+                </PrivateLogin>
+              }
+            />
+            <Route element={<PrivateRoute />}>
+              <Route path="/checkout" element={<CheckoutPage />} />
+            </Route>
+
 </Routes>
