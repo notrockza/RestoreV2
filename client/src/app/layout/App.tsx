@@ -25,6 +25,7 @@ import Login from "../../features/account/Login";
 import { fetchCurrentUser } from "../../features/account/accountSlice";
 import Register from "../../features/account/Register";
 import { PrivateLogin, PrivateRoute } from "./PrivateRoute";
+import OrderPage from "../../features/orders/OrderPage";
 
 export default function App() {
 //const { setBasket } = useStoreContext(); //ควบคุมสเตทด้วย React context to Centralize
@@ -46,17 +47,7 @@ export default function App() {
     initApp().then(() => setLoading(false));
   }, [initApp]);
 
-  // useEffect(() => {
-  //   //เอาข้อมูลใส่ใน COOKIE
-  //   const buyerId = getCookie("buyerId");
-  //   //หลักจากที่มีการ เปลียน state เเล้ว useEffect ก็จะทำงาน
-  //   if (buyerId) {
-  //     agent.Basket.get()
-  //       .then((basket) => dispatch(setBasket(basket)))
-  //       .catch((error) => console.log(error))
-  //       .finally(() => setLoading(false));
-  //   } else setLoading(false);
-  // }, [dispatch]);
+
 
   const [mode, setMode] = useState(true);
   const displayMode = mode ? "light" : "dark";
@@ -111,6 +102,8 @@ const mainrouter = <Routes>
             />
             <Route element={<PrivateRoute />}>
               <Route path="/checkout" element={<CheckoutPage />} />
+              <Route path="/order" element={<OrderPage/>}/>
+
             </Route>
 
 </Routes>

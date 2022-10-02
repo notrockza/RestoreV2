@@ -76,7 +76,8 @@ builder.Services.AddIdentityCore<User>(opt =>
     // จะกำหนด option อะไรบ้าง
     opt.User.RequireUniqueEmail = true;
 })
-     .AddRoles<IdentityRole>()
+    //อย่าลืมเเก้ด้วยนะ
+    .AddRoles<Role>()
     .AddEntityFrameworkStores<StoreContext>();
 
 builder.Services.AddAuthentication();
@@ -87,8 +88,9 @@ builder.Services.AddAuthorization();
 builder.Services.AddIdentityCore<User>(opt =>
 {
     opt.User.RequireUniqueEmail = true;
-})
-    .AddRoles<IdentityRole>()
+})  
+    //อย่าลืมเเก้ด้วยนะ
+    .AddRoles<Role>()
     .AddEntityFrameworkStores<StoreContext>();
 
 //ยืนยัน Token ที่ได้รับว่าถูกต้องหรือไม่บนเซิฟเวอร์

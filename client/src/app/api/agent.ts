@@ -69,6 +69,7 @@ const Account = {
   login: (values: any) => requests.post('account/login', values),
   register: (values: any) => requests.post('account/register', values),
   currentUser: () => requests.get('account/currentUser'),
+  fetchAddress: () => requests.get('account/savedAddress')
 }
 
 
@@ -100,11 +101,19 @@ const Basket = {
   removeItem: (productId:number,quantity=1)=>requests.delete(`basket?productId=${productId}&quantity=${quantity}`)
 }
 
+const Orders = {
+  list: () => requests.get('Order'),
+  fetch: (id: number) => requests.get(`Order/${id}`),
+  create: (values: any) => requests.post('Order', values)
+}
+
+
 const agent = {
   Catalog,
   TestErrors,
   Basket,
-  Account
+  Account,
+  Orders
 };
 
 
