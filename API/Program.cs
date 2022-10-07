@@ -110,12 +110,16 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 builder.Services.AddAuthorization();
 builder.Services.AddScoped<TokenService>();
+// ที่เพื้มขึ้นมาใหม่
+builder.Services.AddScoped<PaymentService>();
 #endregion
+
+
 
 var app = builder.Build();
 
 #region //สร้างข้อมูลจ ำลอง Fake data
-using var scope = app.Services.CreateScope(); //using หลังท ำงำนเสร็จจะถูกท ำลำยจำกMemory
+using var scope = app.Services.CreateScope(); //using หลังทำงานเสร็จจะถูกท ำลำยจำกMemory
 var context = scope.ServiceProvider.GetRequiredService<StoreContext>();
 var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
 var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();

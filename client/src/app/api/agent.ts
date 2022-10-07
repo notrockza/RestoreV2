@@ -6,7 +6,7 @@ import { PaginatedResponse } from "../models/pagination";
 import { store } from "../store/configureStore";
 
 
-axios.defaults.baseURL = "http://localhost:5001/api/";
+axios.defaults.baseURL = "http://localhost:5000/api/";
 axios.defaults.withCredentials = true
 
 const sleep = () => new Promise((_) => setTimeout(_, 350));
@@ -107,13 +107,18 @@ const Orders = {
   create: (values: any) => requests.post('Order', values)
 }
 
+const Payments = {
+  createPaymentIntent: () => requests.post('Payments', {})
+}
+
 
 const agent = {
   Catalog,
   TestErrors,
   Basket,
   Account,
-  Orders
+  Orders,
+  Payments
 };
 
 

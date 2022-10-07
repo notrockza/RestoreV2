@@ -15,7 +15,6 @@ import { ToastContainer } from "react-toastify";
 import ServerError from "../errors/ServerError";
 import LoadingComponent from "./LoadingComponent";
 import BasketPage from "../../features/basket/BasketPage";
-import CheckoutPage from "../../features/checkout/CheckoutPage";
 import { useAppDispatch, useAppSelector } from "../store/configureStore";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -26,6 +25,7 @@ import { fetchCurrentUser } from "../../features/account/accountSlice";
 import Register from "../../features/account/Register";
 import { PrivateLogin, PrivateRoute } from "./PrivateRoute";
 import OrderPage from "../../features/orders/OrderPage";
+import CheckoutWrapper from "../../features/checkout/CheckoutWrapper";
 
 export default function App() {
 //const { setBasket } = useStoreContext(); //ควบคุมสเตทด้วย React context to Centralize
@@ -90,20 +90,19 @@ const mainrouter = <Routes>
   <Route path="/basket" element={<BasketPage />} />
   <Route path="/catalog/:id" element={<ProductDetails />} />
   <Route path="/server-error" element={<ServerError />} />
- <Route path="/register" element={<Register />} />
-  <Route path="*" element={<NotFound />} />   
+  <Route path="/register" element={<Register />} />
+  <Route path="*" element={<NotFound />} />
   <Route
-              path="/login"
-              element={
-                <PrivateLogin>
-                  <Login />
-                </PrivateLogin>
-              }
-            />
-            <Route element={<PrivateRoute />}>
-              <Route path="/checkout" element={<CheckoutPage />} />
-              <Route path="/order" element={<OrderPage/>}/>
-
-            </Route>
+    path="/login"
+    element={
+      <PrivateLogin>
+        <Login />
+      </PrivateLogin>
+    }
+  />
+  <Route element={<PrivateRoute />}>
+    <Route path="/checkout" element={<CheckoutWrapper />} />
+    <Route path="/order" element={<OrderPage />} />
+  </Route>
 
 </Routes>
